@@ -2,12 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const graphqlHttp = require("express-graphql");
 const { buildSchema } = require("graphql");
-
 const mongoose = require("mongoose")
 
-const app = express();
+const Event = require("./models/event")
 
-const events = []
+const app = express();
 
 app.use(bodyParser.json());
 
@@ -64,21 +63,32 @@ app.use("/graphql", graphqlHttp({
         },
         /* get the event details from args  */
         createEvent: (args) => {
-            const event = {
-                _id: Math.random().toString(),
+            // new Event from models/event.js - This is the mongoose Schema
+            const event = new Event({
                 title: args.eventInput.title,
                 description: args.eventInput.description,
                 price: +args.eventInput.price,
-                date: args.eventInput.date
-            }
-            events.push(event)
+                date: new Date(args.eventInput.date)
+            })
+            /* Because event isn't a normal JS object, it is a mongoose object we have access to the .save() methods
+            which will save the object we defined using graphql args into the database. It also has a promise-like response*/
+            return event
+            .save()
+            .then(res => {
+                console.log(res)
+                return {...res._doc}
+            })
+            .catch(err => {
+                console.log(err)
+                throw err
+            })
             return event
         }
     },
     graphiql: true
 }));
 
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@graphqlapp-wdjqw.mongodb.net/test?retryWrites=true`)
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@graphqlapp-wdjqw.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`)
 .then(() => {
     console.log("Successfully connected to MongoDB")
     app.listen(4001)
