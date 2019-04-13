@@ -12,6 +12,31 @@ const app = express();
 
 app.use(bodyParser.json());
 
+const events = eventIds => {
+    // .find() is a Mongoose method for finding documents
+    // $in: eventIds is fancy MongoDB querying syntax
+    return Event.find({ _id: { $in: eventIds }})
+    .then(events => {
+        return events.map(event => {
+            return { 
+                ...event._doc, creator: user.bind(this, event.creator) 
+            }
+        })
+    })
+    .catch( err => {throw err})
+}
+
+const user = userId => {
+    return User.findById(userId)
+    .then(user => {
+        return {  ...user._doc, createdEvents: events.bind(this. user._doc.createdEvents) }
+    })
+    .catch(err => {
+        console.log(err)
+        throw err
+    })
+}
+
 /*
 Each type of query needs a variable type.
 [String!]! -- first ! means NOT NULLABLE, value inside the list cannot be null. Second ! is so the list itself cannot return null
@@ -36,12 +61,14 @@ app.use("/graphql", graphqlHttp({
         description: String!
         price: Float!
         date: String!
+        creator: User!
     }
 
     type User {
         _id: ID!
         email: String!
         password: String
+        createdEvents: [Event!]
     }
 
     input EventInput {
@@ -74,9 +101,16 @@ app.use("/graphql", graphqlHttp({
     rootValue: {
         events: () => {
             return Event.find()
+            /* .populate() is a mongoose method used to populate other fields with relational data. if we didn't have 
+            the populate line here, we wouldn't get Email/Password of a user back. The arguement it takes is the field which
+            we want to populate           */
+            //.populate("creator")
             .then(events => {
                 return events.map(event => {
-                    return { ...event._doc }
+                    /* user() is a function defined right at the top of the page. We use this to replace the .populate() method
+                    we previously defined under the original Mongoose Event.find() call. user() expects a userID parameter,
+                    so we use bind to bind the this context  */
+                    return { ...event._doc, creator: user.bind(this, event._doc.creator) }
                 })
             })
             .catch(err => {

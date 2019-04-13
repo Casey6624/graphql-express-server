@@ -3,9 +3,10 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 /*
-We use a Schema to define the data that we are going to place into the Mongodatabase. 
+We use a Schema to define the data that we are going to place into MongoDB.
 
-Once the schema is defined we place it inside the mongoose model
+Once the schema is defined we place it inside the mongoose model. The model creates the Collection (Table in SQL) for us using the data
+definitions we have defined. We can reference another Model using a ref
 
 */
 const eventSchema = new Schema({
