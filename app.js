@@ -13,6 +13,20 @@ const PORT = 4000
 
 app.use(bodyParser.json())
 
+app.use((req, res, next) => {
+    /* Here we need to setHeader() to bypass the common CORS issue*/
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type", "Authorization");
+    /* Before GraphQL POST request is sent with the data, the browser sends an OPTIONS request in order to get some details about the
+    endpoint. By sending a 200 status back to the browser, we are effectively greenlighting the enpoint and allowing for the actual
+    POST request to come through*/
+    if(req.method === "OPTIONS"){
+        return res.sendStatus(200)
+    }
+    next()
+});
+
 // isAuth will be used on every single request within the app
 app.use(isAuth)
 
