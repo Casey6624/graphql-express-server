@@ -5,7 +5,6 @@ const Event = require('../../models/event');
 const User = require('../../models/user');
 const Booking = require("../../models/booking");
 
-
 const events = async eventIds => {
   try {
     const events = await Event.find({ _id: { $in: eventIds } });
@@ -70,7 +69,6 @@ module.exports = {
     try {
       const bookings = await Booking.find();
       return bookings.map(booking => {
-        console.log(booking._doc.event)
         return {
           ...booking._doc,
           _id: booking.id,
@@ -149,6 +147,20 @@ module.exports = {
       event: singleEvent.bind(this, booking._doc.event),
       createdAt: new Date(result._doc.createdAt).toISOString(),
       updatedAt: new Date(result._doc.updatedAt).toISOString()
+    }
+  },
+  cancelBooking: async args => {
+    try {
+      const booking = await Booking.findById(args.bookingId).populate('event');
+      const event = {
+        ...booking.event._doc,
+        _id: booking.event.id,
+        creator: user.bind(this, booking.event._doc.creator)
+      };
+      await Booking.deleteOne({ _id: args.bookingId });
+      return event;
+    } catch (err) {
+      throw err;
     }
   }
 };
