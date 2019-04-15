@@ -23,7 +23,6 @@ const events = async eventIds => {
     }
   };
   
-  
   const user = async userId => {
     try {
       const user = await User.findById(userId);

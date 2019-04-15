@@ -1,5 +1,5 @@
-const bcrypt = require('bcryptjs');
-
+const bcrypt = require('bcryptjs')
+const jwt = require("jsonwebtoken")
 // Mongoose Models
 const User = require('../../models/user');
 
@@ -24,4 +24,32 @@ module.exports = {
       throw err;
     }
   },
+  login: async ({email, password}) => {
+    // Check to see if the email exists in the database
+    const user = await User.findOne({email: email}) 
+    if(!user){
+      throw new Error("User does not exist");
+    }
+    // hash the password entered in form and check against hashed password in DB
+    const isEqual = await bcrypt.compare(password, user.password)
+    if(!isEqual){
+      throw new Error("Invalid password.")
+    }
+
+    const token = jwt.sign({
+      userId: user.id,
+      email: user.email
+    }, 
+    "somesecretsuperkey",
+    {
+      expiresIn: "1h"
+    }
+    )
+    return{
+      userId: user.id,
+      token: token,
+      tokenExpiration: 1
+    }
+
+  }
 };

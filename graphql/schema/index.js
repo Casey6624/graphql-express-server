@@ -15,6 +15,8 @@ RootQuery returns an array of Event(s). We define the Event type under Type Even
     bookEvent(eventId: ID!): Booking! -- book event with the passed event ID, return Booking data
     cancelBooking(bookingId: ID!): Event -- cancel booking with the passed booking ID, return Event data
 
+
+    queryOrMutation(parameter: parameterType!): returnedData!
 */
 
 module.exports = buildSchema(`
@@ -42,6 +44,12 @@ type User {
   createdEvents: [Event!]
 }
 
+type AuthData {
+  userId: ID!
+  token:  String!
+  tokenExpiration: Int!
+}
+
 input EventInput {
   title: String!
   description: String!
@@ -57,6 +65,7 @@ input UserInput {
 type RootQuery {
     events: [Event!]!
     bookings: [Booking!]!
+    login(email: String!, password: String!): AuthData!
 }
 
 type RootMutation {

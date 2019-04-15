@@ -5,13 +5,13 @@ const Schema = mongoose.Schema
 // schema acts as the blueprint of the model
 const userSchema = new Schema({
     email: {
-        // could also set email to just email: String, but if we pass an object we get more params to use
+        // could also set email to just email: String, but we have to make it an object if we want to add required field
         type: String,
         // using required fits graphql schema of not nullable, Aka String!
         required: true
     },
     password: {
-        // could also set password to just password: String, but if we pass an object we get more params to use
+        // could also set password to just password: String, but we have to make it an object if we want to add required field
         type: String,
         // using required fits graphql schema of not nullable, Aka String!
         required: true
