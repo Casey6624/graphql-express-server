@@ -38,6 +38,6 @@
     font-weight: bold;
 }
 
-.main-navigation__items a:hover, .main-navigation__items a:active{
-    color: darkblue;
+.main-navigation__items a:hover, .main-navigation__items a:active, .main-navigation__items a.active{
+    color: rgb(12, 22, 29);
 }

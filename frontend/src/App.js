@@ -6,6 +6,8 @@ import BookingsPage from "./pages/Bookings"
 import EventsPage from "./pages/Events"
 // components
 import MainNavigation from "./components/Navigation/MainNavigation"
+// Styling
+import "./App.css"
 
 class App extends Component {
   render() {
@@ -13,25 +15,14 @@ class App extends Component {
       <BrowserRouter>
         <Fragment>
           <MainNavigation />
+            <main className="main-content">
             <Switch>
-              <Redirect 
-              from="/"
-              to="/auth"
-              exact
-              />
-              <Route 
-              path="/auth"
-              component={AuthPage}
-              />
-              <Route 
-              path="/events"
-              component={EventsPage}
-              />
-              <Route 
-              path="/bookings"
-              component={BookingsPage}
-              />
+              <Redirect from="/" to="/auth" exact />
+              <Route path="/auth"component={AuthPage} />
+              <Route path="/events"component={EventsPage}/>
+              <Route path="/bookings"component={BookingsPage}/>
             </Switch>
+            </main>
         </Fragment>
       </BrowserRouter>
     );
