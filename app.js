@@ -12,16 +12,6 @@ const PORT = 4000
 
 app.use(bodyParser.json())
 
-/*
-Each type of query needs a variable type.
-[String!]! -- first ! means NOT NULLABLE, value inside the list cannot be null. Second ! is so the list itself cannot return null
-
-It is common practice to use object names like events, just as if events was an object within the application. As opposed to getEvents which
-is more like a function name. This is different for Mutations as mutations are more like function calls with parameter querys 
-
-RootQuery returns an array of Event(s). We define the Event type under Type Event
-*/
-
 app.get("/", (req, res, next) => {
     res.send("Hello!")
 })
