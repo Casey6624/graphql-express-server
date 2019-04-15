@@ -35,7 +35,9 @@ module.exports = {
     if(!isEqual){
       throw new Error("Invalid password.")
     }
-
+    /* First parameter is the object we want to hash using JWT. 
+    Second paramter is the hash string we want to use to has the password
+    Third parameter is a further settings object which tells JWT how long to allow the token to last for */
     const token = jwt.sign({
       userId: user.id,
       email: user.email

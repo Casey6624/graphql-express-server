@@ -5,12 +5,16 @@ const mongoose = require("mongoose")
 
 const graphQLSchema = require("./graphql/schema/index")
 const graphQLResolvers = require("./graphql/resolvers/index")
+const isAuth = require("./middleware/is-auth")
 
 const app = express();
 
 const PORT = 4000
 
 app.use(bodyParser.json())
+
+// isAuth will be used on every single request within the app
+app.use(isAuth)
 
 app.get("/", (req, res, next) => {
     res.send("Hello!")
