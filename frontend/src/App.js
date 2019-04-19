@@ -11,8 +11,6 @@ import "./App.css"
 
 import AuthContext from "./context/auth-context"
 
-//let AuthProvider = useContext(AuthContext)
-
 export default function App(props) {
 
   function login(){
@@ -22,7 +20,6 @@ export default function App(props) {
   function logout(){
     
   }
-
 
     return (
       <BrowserRouter>

@@ -6,7 +6,7 @@ export default function MainNavigation(props){
     return(
         <header className="main-navigation">
             <div className="main-navigation__logo">
-                <h1>EasyEvent 🤘🏼</h1>
+                <h1>EasyEvent <span role="img"> 🤘🏼 </span> </h1>
             </div>
             <nav className="main-navigation__items">
                 <ul>

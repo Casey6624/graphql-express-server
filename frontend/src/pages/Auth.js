@@ -10,7 +10,7 @@ export default function Auth(props){
     const [password, setPassword] = useState("")
     const [isLogin, setIsLogin] = useState(true)
 
-    const {login, logout} = useContext(AuthContext)
+    const contextValue = useContext(AuthContext)
 
     function submitHandler(e){
         e.preventDefault()
@@ -58,14 +58,9 @@ export default function Auth(props){
             }
             return res.json()
         })
-        .then(data => {
-            console.log(data)
-            if(data.createUser){
-                console.log(data.createUser)
-                console.log("New User Created!")
-            }
-            if(data.login){
-                let { token, tokenExpiration, userId} = data.login
+        .then(resData => {
+            if(resData.data.data.login.token){
+                let { token, tokenExpiration, userId} = resData.data.login
                 console.log(`${token} ${tokenExpiration} ${userId}`)
             }
         })
