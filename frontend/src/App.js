@@ -16,9 +16,9 @@ export default function App(props) {
   const [ token, setToken ] = useState(null)
   const [ userId, setUserId ] = useState(null)
 
-  function login( token, userId, tokenExpiration ){
-    setToken(token)
-    setUserId(userId)
+  function login( tokenParam, userIdParam, tokenExpiration ){
+    setToken(tokenParam)
+    setUserId(userIdParam)
   }
 
   function logout(){
@@ -38,10 +38,13 @@ export default function App(props) {
             <MainNavigation />
               <main className="main-content">
               <Switch>
-                <Redirect from="/" to="/auth" exact />
-                <Route path="/auth"component={AuthPage} />
+                { !token && <Redirect from="/" to="/auth" exact /> }
+                { token && <Redirect from="/" to="/events" exact /> }
+                { token && <Redirect from="/auth" to="/events" exact /> }
+
+                { !token && <Route path="/auth"component={AuthPage} /> }
                 <Route path="/events"component={EventsPage}/>
-                <Route path="/bookings"component={BookingsPage}/>
+                { token && <Route path="/bookings"component={BookingsPage}/> }
               </Switch>
               </main>
           </AuthContext.Provider>
