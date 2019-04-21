@@ -10,7 +10,7 @@ export default function Auth(props){
     const [password, setPassword] = useState("")
     const [isLogin, setIsLogin] = useState(true)
 
-    const contextValue = useContext(AuthContext)
+    const contextAuth = useContext(AuthContext)
 
     function submitHandler(e){
         e.preventDefault()
@@ -59,9 +59,10 @@ export default function Auth(props){
             return res.json()
         })
         .then(resData => {
-            if(resData.data.data.login.token){
-                let { token, tokenExpiration, userId} = resData.data.login
-                console.log(`${token} ${tokenExpiration} ${userId}`)
+            if(resData.data.login.token){
+                // Here we destructure data and pass the three params to the login method within context
+                let { token, userId, tokenExpiration } = resData.data.login
+                contextAuth.login(token, userId, tokenExpiration)
             }
         })
         .catch(err => {

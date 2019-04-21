@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useState } from 'react';
 import {Route, BrowserRouter, Redirect, Switch} from "react-router-dom"
 // Pages
 import AuthPage from "./pages/Auth"
@@ -13,22 +13,27 @@ import AuthContext from "./context/auth-context"
 
 export default function App(props) {
 
-  function login(){
+  const [ token, setToken ] = useState(null)
+  const [ userId, setUserId ] = useState(null)
 
+  function login( token, userId, tokenExpiration ){
+    setToken(token)
+    setUserId(userId)
   }
 
   function logout(){
-    
+    setToken(null)
+    setUserId(null)
   }
 
     return (
       <BrowserRouter>
         <Fragment>
           <AuthContext.Provider value={{
-            token: null,
+            token: token,
+            userId: userId,
             login: login,
-            logout: logout,
-            userId: null
+            logout: logout
           }}>
             <MainNavigation />
               <main className="main-content">
