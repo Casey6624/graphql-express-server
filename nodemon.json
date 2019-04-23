@@ -3,5 +3,6 @@
         "MONGO_USER": "DBAdmin",
         "MONGO_PASSWORD": "OPvdqw6euIBKCimC",
         "MONGO_DB": "events-react-dev"
-    }
+    },
+    "ignore": "frontend/*"
 }
