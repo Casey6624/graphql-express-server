@@ -5,3 +5,49 @@ body {
 }
 
 
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+
+.auth-form{
+    width: 25rem;
+    max-width: 80%;
+    margin: 5rem auto;
+}
+
+.form-control label, .form-control input, .form-control textarea{
+    width: 100%;
+    display: block;
+}
+.form-control label{
+    margin-bottom: 0.5rem;
+}
+
+.form-control{
+    margin-bottom: 1rem;
+}
+
+.form-control input{
+    width: -webkit-fill-available;
+    border: none;
+    border-bottom: 0.1rem solid tomato;
+    padding: 1rem;
+}
+
+.form-actions button, .btn{
+    background: tomato;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 1.2rem;
+    padding: 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.form-actions button:hover, .btn:hover{
+    background: #1e1e1e;
+    color: white;
+}
+
+.form-actions{
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+}
