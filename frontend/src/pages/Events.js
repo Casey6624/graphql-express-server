@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useRef, useContext } from "react";
+import React, { useState, Fragment, useRef, useContext, useEffect } from "react";
 // Styling
 import "./Events.css"
 // Components
@@ -12,6 +12,7 @@ export default function EventsPage(props){
     const GraphQLEndpoint = "http://localhost:4000/graphiql"
 
     const [ creating, setCreating ] = useState(false)
+    const [ events, setEvents] =useState([])
 
     const contextAuth = useContext(AuthContext)
 
@@ -19,6 +20,51 @@ export default function EventsPage(props){
     const priceRef = useRef(null)
     const dateRef = useRef(null)
     const descriptionRef = useRef(null)
+
+    useEffect(() => {
+        getAllEvents();
+    }, [])
+
+    function getAllEvents(){
+        const requestBody = {
+            query: `
+            query{
+                events{
+                  _id
+                  title 
+                  description
+                  price
+                  date
+                  creator{
+                    _id
+                    email
+                  }
+                }
+              }
+            `
+        }
+        fetch(GraphQLEndpoint, {
+            // All GraphQL queries require POST as they need a message body
+            method: "POST",
+            body: JSON.stringify(requestBody),
+            headers:{ "Content-Type": "application/json" }
+        })
+        .then(res => {
+            // 200 == success, 201 == created 
+            if(res.status !== 200 && res.status !== 201){
+                throw new Error("Failed!")
+            }
+            return res.json()
+        })
+        .then(resData => {
+            if(resData){
+                setEvents(resData.data.events)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
 
     function startCreateEventHandler(){
         setCreating(true)
@@ -56,7 +102,7 @@ export default function EventsPage(props){
                   }
                 `
             }
-// tes
+
             const token = contextAuth.token
 
         fetch(GraphQLEndpoint, {
@@ -78,6 +124,7 @@ export default function EventsPage(props){
         .then(resData => {
             if(resData){
                 console.log(resData)
+                getAllEvents()
             }
         })
         .catch(err => {
@@ -85,9 +132,16 @@ export default function EventsPage(props){
         })
     }
 
+    const eventList = events.map(event => <li className="events__list-item" key={ event._id }>
+        <p> { event.title } </p>
+        <p> { event.description } </p>
+        <p> £ { event.price } </p>
+        <p> { event.date } </p>
+    </li> )
     
 
     return(
+
         <Fragment>
             { creating && <Backdrop /> }
             { creating && <Modal 
@@ -116,10 +170,13 @@ export default function EventsPage(props){
                     </div>
                 </form>
             </Modal>}
-            <div className="events-control">
-        <p> Share Your Own Events! </p>
-            <button className="btn" onClick={startCreateEventHandler}> Create Event </button>
-        </div>
+            { contextAuth.token && <div className="events-control">
+                <p> Share Your Own Events! </p>
+                <button className="btn" onClick={startCreateEventHandler}> Create Event </button>
+            </div>}
+            <ul className="events__list">
+                { eventList }
+            </ul>
         </Fragment>
     )
 } 
