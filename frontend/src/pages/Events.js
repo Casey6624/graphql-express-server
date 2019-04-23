@@ -177,8 +177,7 @@ export default function EventsPage(props) {
         <div className="events-control">
           <p> Share Your Own Events! </p>
           <button className="btn" onClick={startCreateEventHandler}>
-            {" "}
-            Create Event{" "}
+            Create Event
           </button>
         </div>
       )}
