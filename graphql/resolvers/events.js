@@ -3,6 +3,7 @@
 const { transformEvent } = require("./merge")
 // Mongoose Models
 const Event = require('../../models/event');
+const User = require('../../models/user');
   
 module.exports = {
     events: async () => {

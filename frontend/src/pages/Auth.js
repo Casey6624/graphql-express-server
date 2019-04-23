@@ -73,7 +73,7 @@ export default function Auth(props){
     return(
         <div>
             <h1 style={{textAlign: "center"}}>
-            {isLogin ? "Sign Up" : "Log In"} | EasyEvent
+            {isLogin ? "Log In" : "Sign Up"} | EasyEvent
             </h1>
             <form className="auth-form" onSubmit={submitHandler}>
                 <div className="form-control">
